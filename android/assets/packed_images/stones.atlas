@@ -1,0 +1,83 @@
+
+stones.png
+size: 256,128
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+backward
+  rotate: false
+  xy: 2, 54
+  size: 50, 50
+  orig: 50, 50
+  offset: 0, 0
+  index: -1
+door
+  rotate: false
+  xy: 54, 2
+  size: 50, 50
+  orig: 50, 50
+  offset: 0, 0
+  index: -1
+exclamation
+  rotate: false
+  xy: 106, 54
+  size: 50, 50
+  orig: 50, 50
+  offset: 0, 0
+  index: -1
+exitLeft
+  rotate: false
+  xy: 106, 2
+  size: 50, 50
+  orig: 50, 50
+  offset: 0, 0
+  index: -1
+gray_square_stone
+  rotate: false
+  xy: 158, 38
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+gray_stone
+  rotate: false
+  xy: 192, 38
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+green_stone
+  rotate: false
+  xy: 192, 72
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+pink_stone
+  rotate: false
+  xy: 158, 72
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+question
+  rotate: false
+  xy: 54, 54
+  size: 50, 50
+  orig: 50, 50
+  offset: 0, 0
+  index: -1
+red_stone
+  rotate: false
+  xy: 158, 4
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+refresh
+  rotate: false
+  xy: 2, 2
+  size: 50, 50
+  orig: 50, 50
+  offset: 0, 0
+  index: -1
