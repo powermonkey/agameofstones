@@ -18,7 +18,7 @@ public class GameScreen implements Screen {
         this.game = gam;
         grid = new Grid(game);
         cam = new OrthographicCamera();
-        cam.setToOrtho(false,AGameOfStones.WIDTH, AGameOfStones.HEIGHT);
+        cam.setToOrtho(false, AGameOfStones.WIDTH, AGameOfStones.HEIGHT);
     }
 
     @Override

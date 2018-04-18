@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
 public class GameAssetManager {
     public final AssetManager manager = new AssetManager();
-    public final String imagesPack = "packed_images/stones.atlas";
+    public final String imagesPack = "packedimages/stones.atlas";
     public final String gameFont = "fonts/prstart/prstart.fnt";
 
     public void loadImages() { manager.load(imagesPack, TextureAtlas.class); }

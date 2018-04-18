@@ -7,6 +7,9 @@ import com.agameofstones.game.AGameOfStones;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
+		config.width = AGameOfStones.WIDTH;
+		config.height = AGameOfStones.HEIGHT;
+		config.title = AGameOfStones.TITLE;
 		new LwjglApplication(new AGameOfStones(), config);
 	}
 }

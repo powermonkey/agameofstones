@@ -17,10 +17,11 @@ public class GameAssetLoader {
         gameAssetManager = new GameAssetManager();
         gameAssetManager.loadImages();
         gameAssetManager.loadFonts();
+        gameAssetManager.manager.finishLoading();
     }
 
     public static void getLoadedAssets() {
-        atlas = gameAssetManager.manager.get("packed_images/stones.atlas");
+        atlas = gameAssetManager.manager.get("packedimages/stones.atlas");
         stoneGray = atlas.findRegion("gray_stone");
         stoneGreen = atlas.findRegion("green_stone");
         stonePink = atlas.findRegion("pink_stone");
