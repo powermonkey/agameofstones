@@ -4,11 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
@@ -27,16 +28,14 @@ public class Grid {
     final AGameOfStones game;
     private Table rootTable, table;
     private Stage stage;
-    Label tile [][];
-    private Label.LabelStyle tileRedStyle;
-    TextureAtlas.AtlasRegion stoneGray;
+    private Label tiles [][];
+    private Label.LabelStyle tileRedStyle, tileGreenStyle;
 
     public Grid(AGameOfStones gam) {
         this.game = gam;
         initTable();
         loadAssets();
         loadGrid();
-        initControls();
     }
 
     private void initTable() {
@@ -44,7 +43,7 @@ public class Grid {
         rootTable.setFillParent(true);
         table = new Table();
         stage = new Stage(new FitViewport(game.WIDTH, game.HEIGHT), game.batch);
-        tile = new Label[SIZE_W][SIZE_H];
+        tiles = new Label[SIZE_W][SIZE_H];
     }
 
     private void loadAssets() {
@@ -68,9 +67,12 @@ public class Grid {
         patchDrawableStonePink = new NinePatchDrawable(patchStonePink);
 
         tileRedStyle = new Label.LabelStyle();
-//        tileRedStyle.background = new TextureRegionDrawable(stoneGreen);
         tileRedStyle.background = patchDrawableStoneRed;
         tileRedStyle.font = gameFont;
+
+        tileGreenStyle = new Label.LabelStyle();
+        tileGreenStyle.background = patchDrawableStoneGreen;
+        tileGreenStyle.font = gameFont;
     }
 
     private void loadGrid() {
@@ -78,9 +80,17 @@ public class Grid {
             for(int tileX = 0; tileX < SIZE_W; tileX++) {
                 final int xTile = tileX;
                 final int yTile = tileY;
-                tile[xTile][yTile] = new Label(" ", tileRedStyle);
-                tile[xTile][yTile].setAlignment(Align.center);
-                table.add(tile[xTile][yTile]).center().width(TILE_W).height(TILE_H);
+                tiles[xTile][yTile] = new Label(" ", tileRedStyle);
+                tiles[xTile][yTile].setAlignment(Align.center);
+                tiles[xTile][yTile].addListener(new InputListener() {
+                    @Override
+                    public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                        tiles[xTile][yTile].setStyle(new Label.LabelStyle(tileRedStyle));
+                        tiles[xTile][yTile].getStyle().background = patchDrawableStoneGreen;
+                        return true;
+                    }
+                });
+                table.add(tiles[xTile][yTile]).center().width(TILE_W).height(TILE_H);
             }
             table.row();
         }
@@ -92,10 +102,6 @@ public class Grid {
         rootTable.center().center().padBottom(50);
         stage.addActor(rootTable);
         Gdx.input.setInputProcessor(stage);
-    }
-
-    public void initControls() {
-        
     }
 
     public void render(float delta){
