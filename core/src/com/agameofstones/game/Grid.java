@@ -30,6 +30,7 @@ public class Grid {
     private Stage stage;
     private Label tiles [][];
     private Label.LabelStyle tileRedStyle, tileGreenStyle;
+    private Controls controls;
 
     public Grid(AGameOfStones gam) {
         this.game = gam;
@@ -44,6 +45,7 @@ public class Grid {
         table = new Table();
         stage = new Stage(new FitViewport(game.WIDTH, game.HEIGHT), game.batch);
         tiles = new Label[SIZE_W][SIZE_H];
+        controls = new Controls();
     }
 
     private void loadAssets() {
@@ -81,15 +83,7 @@ public class Grid {
                 final int xTile = tileX;
                 final int yTile = tileY;
                 tiles[xTile][yTile] = new Label(" ", tileRedStyle);
-                tiles[xTile][yTile].setAlignment(Align.center);
-                tiles[xTile][yTile].addListener(new InputListener() {
-                    @Override
-                    public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                        tiles[xTile][yTile].setStyle(new Label.LabelStyle(tileRedStyle));
-                        tiles[xTile][yTile].getStyle().background = patchDrawableStoneGreen;
-                        return true;
-                    }
-                });
+                controls.addFlip(tiles[xTile][yTile], tileRedStyle, patchDrawableStoneGreen);
                 table.add(tiles[xTile][yTile]).center().width(TILE_W).height(TILE_H);
             }
             table.row();
