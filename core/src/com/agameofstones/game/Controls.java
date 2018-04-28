@@ -11,19 +11,26 @@ import com.badlogic.gdx.utils.Align;
  */
 
 public class Controls {
-    private final Label.LabelStyle unFlippedStyle;
-    private final NinePatchDrawable flippedStyle;
+    private Label.LabelStyle tileRedStyle;
+    private NinePatchDrawable stoneGreen, stoneRed;
     private final Label[][] gridTiles;
+    private final boolean[][] gridField;
     private Constants constants;
 
-    public Controls(Label[][] tiles, Label.LabelStyle unflipped, NinePatchDrawable flipped){
+    public Controls(boolean[][] gfield, Label[][] tiles){
         gridTiles = tiles;
-        unFlippedStyle = unflipped;
-        flippedStyle = flipped;
+        gridField = gfield;
         constants = new Constants();
+        getAssets();
     }
 
-    public void addFlip(int x, int y) {
+    private void getAssets() {
+        tileRedStyle = GameAssetLoader.tileRedStyle;
+        stoneGreen = GameAssetLoader.patchDrawableStoneGreen;
+        stoneRed = GameAssetLoader.patchDrawableStoneRed;
+    };
+
+    public void addFlipListener(int x, int y) {
         final Label tile = gridTiles[x][y];
         final int xTile = x;
         final int yTile = y;
@@ -31,7 +38,7 @@ public class Controls {
         tile.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                flip(tile);
+                flipTile(xTile, yTile);
                 flipTilesNear(xTile, yTile);
                 return true;
             }
@@ -39,30 +46,39 @@ public class Controls {
     }
 
     private void flipTilesNear(int x, int y) {
-        flip(tileAt(x, y - 1));      // S
-        flip(tileAt(x - 1, y));      // W
-        flip(tileAt(x + 1, y));      // E
-        flip(tileAt(x, y + 1));      // N
+        tileAt(x, y - 1);      // S
+        tileAt(x - 1, y);      // W
+        tileAt(x + 1, y);      // E
+        tileAt(x, y + 1);      // N
     }
 
-    private Label tileAt(int x, int y) {System.out.println(x+" "+y);
+    private void tileAt(int x, int y) {
         if(x >= 0 && x < constants.SIZE_W && y >= 0 && y < constants.SIZE_H){
-            return gridTiles[x][y];
+            flipTile(x, y);
         }else{
             if(x < 0) {
-                return gridTiles[x + (constants.SIZE_W)][y];
+                flipTile(x + (constants.SIZE_W), y);
             } else if (x >= constants.SIZE_W) {
-                return gridTiles[x - (constants.SIZE_W)][y];
+                flipTile(x - (constants.SIZE_W), y);
             } else if(y >= constants.SIZE_H) {
-                return gridTiles[x][y - (constants.SIZE_H)];
+                flipTile(x, y - (constants.SIZE_H));
             } else {
-                return gridTiles[x][y + (constants.SIZE_H)];
+                flipTile(x, y + (constants.SIZE_H));
             }
         }
     }
 
-    private void flip(Label tile) {
-        tile.setStyle(new Label.LabelStyle(unFlippedStyle));
-        tile.getStyle().background = flippedStyle;
+    private void flipTile(int x, int y) {
+        gridTiles[x][y].setStyle(new Label.LabelStyle(tileRedStyle));
+        toggleGridField(x, y);
+        if(gridField[x][y] == false){
+            gridTiles[x][y].getStyle().background = stoneRed;
+        } else {
+            gridTiles[x][y].getStyle().background = stoneGreen;
+        }
+    }
+
+    private void toggleGridField(int x, int y) {
+        gridField[x][y] = !gridField[x][y];
     }
 }

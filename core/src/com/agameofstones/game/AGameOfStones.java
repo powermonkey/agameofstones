@@ -12,8 +12,8 @@ public class AGameOfStones extends Game {
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		GameAssetLoader.load();
-		GameAssetLoader.getLoadedAssets();
+		GameAssetLoader.loadAssets();
+		GameAssetLoader.setAssets();
         //TODO: set to main menu screen
         this.setScreen(new GameScreen(this));
 	}
