@@ -18,10 +18,6 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
  */
 
 public class Grid {
-    private static final int SIZE_W = 8;
-    private static final int SIZE_H = 8;
-    private static final int TILE_W = 50;
-    private static final int TILE_H = 50;
 
     private NinePatchDrawable patchDrawableStoneGray, patchDrawableStoneSquare, patchDrawableStoneGreen, patchDrawableStoneRed, patchDrawableStonePink;
     private BitmapFont gameFont;
@@ -31,9 +27,11 @@ public class Grid {
     private Label tiles [][];
     private Label.LabelStyle tileRedStyle, tileGreenStyle;
     private Controls controls;
+    private Constants constants;
 
     public Grid(AGameOfStones gam) {
         this.game = gam;
+        constants = new Constants();
         initTable();
         loadAssets();
         loadGrid();
@@ -44,8 +42,7 @@ public class Grid {
         rootTable.setFillParent(true);
         table = new Table();
         stage = new Stage(new FitViewport(game.WIDTH, game.HEIGHT), game.batch);
-        tiles = new Label[SIZE_W][SIZE_H];
-        controls = new Controls();
+        tiles = new Label[constants.SIZE_W][constants.SIZE_H];
     }
 
     private void loadAssets() {
@@ -78,13 +75,14 @@ public class Grid {
     }
 
     private void loadGrid() {
-        for(int tileY = (SIZE_H - 1); tileY >= 0; tileY--) {
-            for(int tileX = 0; tileX < SIZE_W; tileX++) {
+        controls = new Controls(tiles, tileRedStyle, patchDrawableStoneGreen);
+        for(int tileY = (constants.SIZE_H - 1); tileY >= 0; tileY--) {
+            for(int tileX = 0; tileX < constants.SIZE_W; tileX++) {
                 final int xTile = tileX;
                 final int yTile = tileY;
                 tiles[xTile][yTile] = new Label(" ", tileRedStyle);
-                controls.addFlip(tiles[xTile][yTile], tileRedStyle, patchDrawableStoneGreen);
-                table.add(tiles[xTile][yTile]).center().width(TILE_W).height(TILE_H);
+                controls.addFlip(xTile, yTile);
+                table.add(tiles[xTile][yTile]).center().width(constants.TILE_W).height(constants.TILE_H);
             }
             table.row();
         }
