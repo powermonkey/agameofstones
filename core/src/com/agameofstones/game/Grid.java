@@ -64,7 +64,7 @@ public class Grid {
                 final int xTile = tileX;
                 final int yTile = tileY;
 
-                //testing grid
+//                //testing grid
 //                if((xTile == 6 && yTile == 2) || (xTile == 5 && yTile == 1) || (xTile == 6 && yTile == 1) || (xTile == 7 && yTile == 1) || (xTile == 6 && yTile == 0)) {
 //                    tiles[xTile][yTile] = new Label(" ", tileRedStyle);
 //                    gridField[xTile][yTile] = false; //flipped tile
@@ -107,6 +107,8 @@ public class Grid {
         winRootTable.row();
         winRootTable.setVisible(false);
         stage.addActor(winRootTable);
+
+        controls.winMessageListener(okayWinButton, winTable);
     }
 
     public void render(float delta){

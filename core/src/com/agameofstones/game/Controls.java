@@ -4,6 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.Align;
 
@@ -29,7 +30,18 @@ public class Controls {
         tileRedStyle = GameAssetLoader.tileRedStyle;
         stoneGreen = GameAssetLoader.patchDrawableStoneGreen;
         stoneRed = GameAssetLoader.patchDrawableStoneRed;
-    };
+    }
+
+    public void winMessageListener(TextButton okayButton, Table wTable) {
+        final Table winTable = wTable;
+        okayButton.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                winTable.setVisible(false);
+                return true;
+            }
+        });
+    }
 
     public void addFlipListener(int x, int y, Table wTable) {
         final Label tile = gridTiles[x][y];
