@@ -3,6 +3,7 @@ package com.agameofstones.game;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.Align;
 
@@ -30,16 +31,22 @@ public class Controls {
         stoneRed = GameAssetLoader.patchDrawableStoneRed;
     };
 
-    public void addFlipListener(int x, int y) {
+    public void addFlipListener(int x, int y, Table wTable) {
         final Label tile = gridTiles[x][y];
+        final Table winTable = wTable;
         final int xTile = x;
         final int yTile = y;
         tile.setAlignment(Align.center);
         tile.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                flipTile(xTile, yTile);
-                flipTilesNear(xTile, yTile);
+                if(!allTilesFlipped()) {
+                    flipTile(xTile, yTile);
+                    flipTilesNear(xTile, yTile);
+                    if (allTilesFlipped()) {
+                        winTable.setVisible(true);
+                    }
+                }
                 return true;
             }
         });
@@ -71,7 +78,7 @@ public class Controls {
     private void flipTile(int x, int y) {
         gridTiles[x][y].setStyle(new Label.LabelStyle(tileRedStyle));
         toggleGridField(x, y);
-        if(gridField[x][y] == false){
+        if(!gridField[x][y]){
             gridTiles[x][y].getStyle().background = stoneRed;
         } else {
             gridTiles[x][y].getStyle().background = stoneGreen;
@@ -80,5 +87,21 @@ public class Controls {
 
     private void toggleGridField(int x, int y) {
         gridField[x][y] = !gridField[x][y];
+    }
+
+    private boolean allTilesFlipped() {
+        boolean allFlipped = false;
+        for(int y = (constants.SIZE_H - 1); y >= 0; y--) {
+            for (int x = 0; x < constants.SIZE_W; x++) {
+                if(!gridField[x][y]) {
+                    allFlipped = false;
+                    break;
+                } else {
+                    allFlipped = true;
+                }
+            }
+        }
+
+        return allFlipped;
     }
 }

@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 
 /**
@@ -16,6 +17,7 @@ public class GameAssetLoader {
     public static BitmapFont gameFont;
     public static Label.LabelStyle tileRedStyle, tileGreenStyle;
     public static NinePatchDrawable patchDrawableStoneGray, patchDrawableStoneSquare, patchDrawableStoneGreen, patchDrawableStoneRed, patchDrawableStonePink;
+    public static TextButton.TextButtonStyle okayWinButtonStyle;
     static GameAssetManager gameAssetManager;
 
 
@@ -66,6 +68,11 @@ public class GameAssetLoader {
         tileGreenStyle = new Label.LabelStyle();
         tileGreenStyle.background = patchDrawableStoneGreen;
         tileGreenStyle.font = gameFont;
+
+        okayWinButtonStyle = new TextButton.TextButtonStyle();
+        okayWinButtonStyle.up = patchDrawableStoneSquare;
+        okayWinButtonStyle.down = patchDrawableStoneSquare;
+        okayWinButtonStyle.font = gameFont;
     }
 
     public static void dispose() {
