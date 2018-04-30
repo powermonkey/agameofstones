@@ -102,14 +102,12 @@ public class Controls {
     }
 
     private boolean allTilesFlipped() {
-        boolean allFlipped = false;
+        boolean allFlipped = true;
         for(int y = (constants.SIZE_H - 1); y >= 0; y--) {
             for (int x = 0; x < constants.SIZE_W; x++) {
                 if(!gridField[x][y]) {
                     allFlipped = false;
                     break;
-                } else {
-                    allFlipped = true;
                 }
             }
         }

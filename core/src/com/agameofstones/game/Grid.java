@@ -65,7 +65,7 @@ public class Grid {
                 final int yTile = tileY;
 
 //                //testing grid
-//                if((xTile == 6 && yTile == 2) || (xTile == 5 && yTile == 1) || (xTile == 6 && yTile == 1) || (xTile == 7 && yTile == 1) || (xTile == 6 && yTile == 0)) {
+//                if((xTile == 6 && yTile == 3) || (xTile == 5 && yTile == 2) || (xTile == 6 && yTile == 2) || (xTile == 7 && yTile == 2) || (xTile == 6 && yTile == 1)) {
 //                    tiles[xTile][yTile] = new Label(" ", tileRedStyle);
 //                    gridField[xTile][yTile] = false; //flipped tile
 //                } else {
