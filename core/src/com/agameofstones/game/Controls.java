@@ -14,10 +14,11 @@ import com.badlogic.gdx.utils.Align;
 
 public class Controls {
     private Label.LabelStyle tileRedStyle;
-    private NinePatchDrawable stoneGreen, stoneRed;
+    private NinePatchDrawable stoneGreen, stoneRed, stoneSquare;
     private final Label[][] gridTiles;
     private final boolean[][] gridField;
     private Constants constants;
+    private int lastTouchedTileX, lastTouchedTileY;
 
     public Controls(boolean[][] gfield, Label[][] tiles){
         gridTiles = tiles;
@@ -30,6 +31,9 @@ public class Controls {
         tileRedStyle = GameAssetLoader.tileRedStyle;
         stoneGreen = GameAssetLoader.patchDrawableStoneGreen;
         stoneRed = GameAssetLoader.patchDrawableStoneRed;
+        stoneSquare = GameAssetLoader.patchDrawableStoneSquare;
+        lastTouchedTileX = 8;
+        lastTouchedTileY = 8;
     }
 
     public void winMessageListener(TextButton okayButton, Table wTable) {
@@ -53,7 +57,7 @@ public class Controls {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 if(!allTilesFlipped()) {
-                    flipTile(xTile, yTile);
+                    flipMainTile(xTile, yTile);
                     flipTilesNear(xTile, yTile);
                     if (allTilesFlipped()) {
                         winTable.setVisible(true);
@@ -90,10 +94,37 @@ public class Controls {
     private void flipTile(int x, int y) {
         gridTiles[x][y].setStyle(new Label.LabelStyle(tileRedStyle));
         toggleGridField(x, y);
+
         if(!gridField[x][y]){
             gridTiles[x][y].getStyle().background = stoneRed;
         } else {
             gridTiles[x][y].getStyle().background = stoneGreen;
+        }
+    }
+
+    private void flipMainTile(int x, int y) {
+        gridTiles[x][y].setStyle(new Label.LabelStyle(tileRedStyle));
+        toggleGridField(x, y);
+
+        if(lastTouchedTileX == 8 && lastTouchedTileY == 8) {
+            System.out.println("load grid: "+x+" "+y+" "+lastTouchedTileX+" "+lastTouchedTileY);
+        } else {
+                //set previous style back
+                if(!gridField[lastTouchedTileX][lastTouchedTileY]){
+                    gridTiles[lastTouchedTileX][lastTouchedTileY].getStyle().background = stoneRed;
+                } else {
+                    gridTiles[lastTouchedTileX][lastTouchedTileY].getStyle().background = stoneGreen;
+                }
+        }
+
+        //save coordinates for last touched tile
+        lastTouchedTileX = x;
+        lastTouchedTileY = y;
+
+        if(!gridField[x][y]){
+            gridTiles[x][y].getStyle().background = stoneSquare;
+        } else {
+            gridTiles[x][y].getStyle().background = stoneSquare;
         }
     }
 
