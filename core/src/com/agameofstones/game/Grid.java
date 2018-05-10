@@ -1,12 +1,17 @@
 package com.agameofstones.game;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 /**
@@ -14,9 +19,9 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
  */
 
 public class Grid {
-    private NinePatchDrawable stoneGreen, stoneSquare;
+    private NinePatchDrawable stoneSquare;
     final AGameOfStones game;
-    private Table rootTable, table, winRootTable, winTable;
+    private Table rootTable, table, winRootTable, winTable, hudTable, hudRootTable;
     private Stage stage;
     private Label tiles [][];
     private Label.LabelStyle tileRedStyle, tileGreenStyle;
@@ -24,6 +29,7 @@ public class Grid {
     private Controls controls;
     private Constants constants;
 //    private TextButton okayWinButton;
+    private TextureAtlas.AtlasRegion exitIcon, newGameIcon;
     private TextButton.TextButtonStyle okayWinButtonStyle;
     private BitmapFont gameFont;
 
@@ -35,6 +41,8 @@ public class Grid {
         getAssets();
         loadGrid();
         loadWinGrid();
+        loadHudGrid();
+        setInput();
     }
 
     private void initTables() {
@@ -43,18 +51,22 @@ public class Grid {
         winRootTable = new Table();
         winRootTable.setFillParent(true);
         winTable = new Table();
+        hudTable = new Table();
+        hudRootTable = new Table();
+        hudRootTable.setFillParent(true);
         table = new Table();
         stage = new Stage(new FitViewport(game.WIDTH, game.HEIGHT), game.batch);
         tiles = new Label[constants.SIZE_W][constants.SIZE_H];
     }
 
     private void getAssets() {
-        stoneGreen = GameAssetLoader.patchDrawableStoneGreen;
         stoneSquare = GameAssetLoader.patchDrawableStoneSquare;
         tileRedStyle = GameAssetLoader.tileRedStyle;
         tileGreenStyle = GameAssetLoader.tileGreenStyle;
         okayWinButtonStyle = GameAssetLoader.okayWinButtonStyle;
         gameFont = GameAssetLoader.gameFont;
+        exitIcon = GameAssetLoader.exitIcon;
+        newGameIcon = GameAssetLoader.newGameIcon;
     }
 
     private void loadGrid() {
@@ -87,7 +99,6 @@ public class Grid {
         rootTable.row();
         rootTable.center().center().padBottom(50);
         stage.addActor(rootTable);
-        Gdx.input.setInputProcessor(stage);
     }
 
     private void loadWinGrid() {
@@ -109,6 +120,27 @@ public class Grid {
         stage.addActor(winRootTable);
 
         controls.winMessageListener(okayWinButton, winTable);
+    }
+
+    private void loadHudGrid() {
+        ImageButton exitBtn = new ImageButton(new TextureRegionDrawable(new TextureRegion(exitIcon)));
+        ImageButton newGameBtn = new ImageButton(new TextureRegionDrawable(new TextureRegion(newGameIcon)));
+
+        hudTable.add(exitBtn);
+        hudTable.add(newGameBtn);
+        hudTable.setBackground(stoneSquare);
+
+        hudRootTable.add(hudTable);
+        hudRootTable.center().bottom().padBottom(100);
+
+        controls.exitBtnListener(exitBtn);
+        controls.newGameBtnListener(newGameBtn, game);
+
+        stage.addActor(hudRootTable);
+    }
+
+    private void setInput() {
+        Gdx.input.setInputProcessor(stage);
     }
 
     public void render(float delta){

@@ -1,11 +1,14 @@
 package com.agameofstones.game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 
 /**
@@ -15,6 +18,7 @@ import com.badlogic.gdx.utils.Align;
 public class Controls {
     private Label.LabelStyle tileRedStyle;
     private NinePatchDrawable stoneGreen, stoneRed, stoneSquare;
+    private TextureRegionDrawable starStoneRed, starStoneGreen;
     private final Label[][] gridTiles;
     private final boolean[][] gridField;
     private Constants constants;
@@ -31,6 +35,8 @@ public class Controls {
         tileRedStyle = GameAssetLoader.tileRedStyle;
         stoneGreen = GameAssetLoader.patchDrawableStoneGreen;
         stoneRed = GameAssetLoader.patchDrawableStoneRed;
+        starStoneRed = GameAssetLoader.starRed;
+        starStoneGreen = GameAssetLoader.starGreen;
         stoneSquare = GameAssetLoader.patchDrawableStoneSquare;
         lastTouchedTileX = 8;
         lastTouchedTileY = 8;
@@ -107,7 +113,7 @@ public class Controls {
         toggleGridField(x, y);
 
         if(lastTouchedTileX == 8 && lastTouchedTileY == 8) {
-            System.out.println("load grid: "+x+" "+y+" "+lastTouchedTileX+" "+lastTouchedTileY);
+            //System.out.println("load grid: "+x+" "+y+" "+lastTouchedTileX+" "+lastTouchedTileY);
         } else {
                 //set previous style back
                 if(!gridField[lastTouchedTileX][lastTouchedTileY]){
@@ -122,9 +128,9 @@ public class Controls {
         lastTouchedTileY = y;
 
         if(!gridField[x][y]){
-            gridTiles[x][y].getStyle().background = stoneSquare;
+            gridTiles[x][y].getStyle().background = starStoneRed;
         } else {
-            gridTiles[x][y].getStyle().background = stoneSquare;
+            gridTiles[x][y].getStyle().background = starStoneGreen;
         }
     }
 
@@ -144,5 +150,25 @@ public class Controls {
         }
 
         return allFlipped;
+    }
+
+    public void newGameBtnListener(ImageButton newGameBtn, AGameOfStones gam) {
+        final AGameOfStones game = gam;
+        newGameBtn.addListener(new InputListener(){
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                game.setScreen(new GameScreen(game));
+                return true;
+            }
+        });
+    }
+
+    public void exitBtnListener(ImageButton exitBtn) {
+        exitBtn.addListener(new InputListener(){
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                Gdx.app.exit();
+                GameAssetLoader.dispose();
+                return true;
+            }
+        });
     }
 }
