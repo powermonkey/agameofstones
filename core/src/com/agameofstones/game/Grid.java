@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -19,7 +19,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
  */
 
 public class Grid {
-    private NinePatchDrawable stoneSquare;
+    private NinePatchDrawable stoneSquare, stoneGray;
     final AGameOfStones game;
     private Table rootTable, table, winRootTable, winTable, hudTable, hudRootTable;
     private Stage stage;
@@ -61,6 +61,7 @@ public class Grid {
 
     private void getAssets() {
         stoneSquare = GameAssetLoader.patchDrawableStoneSquare;
+        stoneGray = GameAssetLoader.patchDrawableStoneGray;
         tileRedStyle = GameAssetLoader.tileRedStyle;
         tileGreenStyle = GameAssetLoader.tileGreenStyle;
         okayWinButtonStyle = GameAssetLoader.okayWinButtonStyle;
@@ -123,12 +124,23 @@ public class Grid {
     }
 
     private void loadHudGrid() {
-        ImageButton exitBtn = new ImageButton(new TextureRegionDrawable(new TextureRegion(exitIcon)));
-        ImageButton newGameBtn = new ImageButton(new TextureRegionDrawable(new TextureRegion(newGameIcon)));
+//        stage.setDebugAll(true);
 
-        hudTable.add(exitBtn);
-        hudTable.add(newGameBtn);
-        hudTable.setBackground(stoneSquare);
+        Button exitBtn = new Button();
+        Button.ButtonStyle exitBtnStyle = new Button.ButtonStyle();
+        exitBtnStyle.up = new TextureRegionDrawable(new TextureRegion(exitIcon));
+        exitBtnStyle.down = new TextureRegionDrawable(new TextureRegion(exitIcon));
+        exitBtn.setStyle(exitBtnStyle);
+
+        Button newGameBtn = new Button();
+        Button.ButtonStyle newGameBtnStyle = new Button.ButtonStyle();
+        newGameBtnStyle.up = new TextureRegionDrawable(new TextureRegion(newGameIcon));
+        newGameBtnStyle.down = new TextureRegionDrawable(new TextureRegion(newGameIcon));
+        newGameBtn.setStyle(newGameBtnStyle);
+
+        hudTable.add(exitBtn).pad(10).width(45).height(45);
+        hudTable.add(newGameBtn).pad(10).width(45).height(45);
+        hudTable.background(stoneGray);
 
         hudRootTable.add(hudTable);
         hudRootTable.center().bottom().padBottom(100);

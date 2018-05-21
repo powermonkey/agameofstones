@@ -39,11 +39,11 @@ public class GameAssetLoader {
         stonePink = atlas.findRegion("pink_stone");
         stoneRed = atlas.findRegion("red_stone");
         stoneGraySquare = atlas.findRegion("gray_square_stone");
-        exitIcon = atlas.findRegion("door");
-        mainMenuIcon = atlas.findRegion("backward");
-        newGameIcon = atlas.findRegion("exitLeft");
-        randomizeIcon = atlas.findRegion("question");
-        undoIcon = atlas.findRegion("refresh");
+        exitIcon = atlas.findRegion("stone_exit");
+        mainMenuIcon = atlas.findRegion("stone_back");
+        newGameIcon = atlas.findRegion("stone_new_game");
+        randomizeIcon = atlas.findRegion("stone_random");
+        undoIcon = atlas.findRegion("stone_undo");
 
         gameFont = gameAssetManager.manager.get("fonts/prstart/prstart.fnt");
 

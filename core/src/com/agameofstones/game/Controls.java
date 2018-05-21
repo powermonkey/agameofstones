@@ -3,6 +3,7 @@ package com.agameofstones.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -152,7 +153,7 @@ public class Controls {
         return allFlipped;
     }
 
-    public void newGameBtnListener(ImageButton newGameBtn, AGameOfStones gam) {
+    public void newGameBtnListener(Button newGameBtn, AGameOfStones gam) {
         final AGameOfStones game = gam;
         newGameBtn.addListener(new InputListener(){
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
@@ -162,7 +163,7 @@ public class Controls {
         });
     }
 
-    public void exitBtnListener(ImageButton exitBtn) {
+    public void exitBtnListener(Button exitBtn) {
         exitBtn.addListener(new InputListener(){
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 Gdx.app.exit();
