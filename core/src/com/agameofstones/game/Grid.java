@@ -29,7 +29,7 @@ public class Grid {
     private Controls controls;
     private Constants constants;
 //    private TextButton okayWinButton;
-    private TextureAtlas.AtlasRegion exitIcon, newGameIcon;
+    private TextureAtlas.AtlasRegion exitIcon, newGameIcon, undoIcon;
     private TextButton.TextButtonStyle okayWinButtonStyle;
     private BitmapFont gameFont;
 
@@ -68,6 +68,7 @@ public class Grid {
         gameFont = GameAssetLoader.gameFont;
         exitIcon = GameAssetLoader.exitIcon;
         newGameIcon = GameAssetLoader.newGameIcon;
+        undoIcon = GameAssetLoader.undoIcon;
     }
 
     private void loadGrid() {
@@ -138,13 +139,21 @@ public class Grid {
         newGameBtnStyle.down = new TextureRegionDrawable(new TextureRegion(newGameIcon));
         newGameBtn.setStyle(newGameBtnStyle);
 
-        hudTable.add(exitBtn).pad(10).width(45).height(45);
-        hudTable.add(newGameBtn).pad(10).width(45).height(45);
+        Button undoBtn = new Button();
+        Button.ButtonStyle undoBtnStyle = new Button.ButtonStyle();
+        undoBtnStyle.up = new TextureRegionDrawable(new TextureRegion(undoIcon));
+        undoBtnStyle.down = new TextureRegionDrawable(new TextureRegion(undoIcon));
+        undoBtn.setStyle(undoBtnStyle);
+
+        hudTable.add(exitBtn).pad(5).width(50).height(50);
+        hudTable.add(newGameBtn).pad(5).width(50).height(50);
+        hudTable.add(undoBtn).pad(5).width(50).height(50);
         hudTable.background(stoneGray);
 
         hudRootTable.add(hudTable);
         hudRootTable.center().bottom().padBottom(100);
 
+        controls.undoBtnListener(undoBtn);
         controls.exitBtnListener(exitBtn);
         controls.newGameBtnListener(newGameBtn, game);
 

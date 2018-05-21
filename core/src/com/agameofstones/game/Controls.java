@@ -12,6 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 
+import java.util.ArrayDeque;
+
 /**
  * Created by Rod on 4/28/2018.
  */
@@ -24,11 +26,15 @@ public class Controls {
     private final boolean[][] gridField;
     private Constants constants;
     private int lastTouchedTileX, lastTouchedTileY;
+    private ArrayDeque<UndoCoordinates> undoStack;
+    private UndoCoordinates undoCoordinates;
 
     public Controls(boolean[][] gfield, Label[][] tiles){
         gridTiles = tiles;
         gridField = gfield;
         constants = new Constants();
+        undoStack = new ArrayDeque<UndoCoordinates>();
+        undoCoordinates = new UndoCoordinates();
         getAssets();
     }
 
@@ -66,6 +72,14 @@ public class Controls {
                 if(!allTilesFlipped()) {
                     flipMainTile(xTile, yTile);
                     flipTilesNear(xTile, yTile);
+
+                    //tile undo stack
+                    undoCoordinates = new UndoCoordinates(); //TODO: change this to without creating new objects
+                    undoCoordinates.setXtile(xTile);
+                    undoCoordinates.setYtile(yTile);
+
+                    undoStack.push(undoCoordinates);
+
                     if (allTilesFlipped()) {
                         winTable.setVisible(true);
                     }
@@ -171,5 +185,57 @@ public class Controls {
                 return true;
             }
         });
+    }
+
+    public void undoBtnListener(Button undoBtn) {
+        undoBtn.addListener(new InputListener(){
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                if(undoStack.size() > 0) {
+                    UndoCoordinates undoCoordinates = undoStack.pop();
+                    int xtile = undoCoordinates.getXTile();
+                    int ytile = undoCoordinates.getYTile();
+
+                    flipTile(xtile, ytile);
+                    flipTilesNear(xtile, ytile);
+
+                    if(undoStack.size() != 0) {
+                        UndoCoordinates lastTouched = undoStack.peek();
+                        if(!gridField[lastTouched.getXTile()][lastTouched.getYTile()]) {
+                            gridTiles[lastTouched.getXTile()][lastTouched.getYTile()].getStyle().background = starStoneRed;
+                        } else {
+                            gridTiles[lastTouched.getXTile()][lastTouched.getYTile()].getStyle().background = starStoneGreen;
+                        }
+                        lastTouchedTileX = lastTouched.getXTile();
+                        lastTouchedTileY = lastTouched.getYTile();
+                    }
+                }
+                return true;
+            }
+        });
+    }
+
+    class UndoCoordinates
+    {
+        public int xTile;
+        public int yTile;
+
+        public UndoCoordinates setXtile(int xTile) {
+            this.xTile = xTile;
+            return this;
+        }
+
+        public UndoCoordinates setYtile(int yTile) {
+            this.yTile = yTile;
+
+            return this;
+        }
+
+        public int getXTile() {
+            return this.xTile;
+        }
+
+        public int getYTile() {
+            return this.yTile;
+        }
     }
 }
