@@ -78,8 +78,8 @@ public class GameAssetLoader {
         tileGreenStyle.font = gameFont;
 
         okayWinButtonStyle = new TextButton.TextButtonStyle();
-        okayWinButtonStyle.up = patchDrawableStoneSquare;
-        okayWinButtonStyle.down = patchDrawableStoneSquare;
+        okayWinButtonStyle.up = patchDrawableStoneGray;
+        okayWinButtonStyle.down = patchDrawableStoneGray;
         okayWinButtonStyle.font = gameFont;
     }
 

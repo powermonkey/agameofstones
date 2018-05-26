@@ -26,19 +26,22 @@ public class Controls {
     private NinePatchDrawable stoneGreen, stoneRed, stoneSquare;
     private TextureRegionDrawable starStoneRed, starStoneGreen;
     private final Label[][] gridTiles;
-    private Label timeMsg;
+    private Label timeMsg, movesMsg;
     private final boolean[][] gridField;
     private Constants constants;
     private int lastTouchedTileX, lastTouchedTileY;
     private ArrayDeque<UndoCoordinates> undoStack;
     private UndoCoordinates undoCoordinates;
     private long startTime;
+    private int movesCtr;
 
-    public Controls(boolean[][] gfield, Label[][] tiles, long sTime, Label tMsg){
+    public Controls(boolean[][] gfield, Label[][] tiles, long sTime, Label tMsg, Label moveMsg, int moves){
         gridTiles = tiles;
         gridField = gfield;
         startTime = sTime;
         timeMsg = tMsg;
+        movesMsg = moveMsg;
+        movesCtr = moves;
         constants = new Constants();
         undoStack = new ArrayDeque<UndoCoordinates>();
         undoCoordinates = new UndoCoordinates();
@@ -79,6 +82,7 @@ public class Controls {
                 if(!allTilesFlipped()) {
                     flipMainTile(xTile, yTile);
                     flipTilesNear(xTile, yTile);
+                    incMovesCtr();
 
                     //tile undo stack
                     undoCoordinates = new UndoCoordinates(); //TODO: change this to without creating new objects
@@ -90,6 +94,7 @@ public class Controls {
                     if (allTilesFlipped()) {
                         winTable.setVisible(true);
                         setElapsedTime();
+                        setNumberOfMoves();
                     }
                 }
                 return true;
@@ -181,7 +186,19 @@ public class Controls {
         if(elapsedTime > 999000) {
             elapsedTime = 999;
         }
-        timeMsg.setText("Time: "+Long.toString(elapsedTime)+"s");
+        timeMsg.setText("Time: "+Long.toString(elapsedTime)+" s");
+    }
+
+    private void setNumberOfMoves() {
+        movesMsg.setText("Moves: "+Integer.toString(movesCtr));
+    }
+
+    private void incMovesCtr() {
+        movesCtr++;
+    }
+
+    private void decMovesCtr() {
+        movesCtr--;
     }
 
     public void newGameBtnListener(Button newGameBtn, AGameOfStones gam) {
@@ -215,6 +232,7 @@ public class Controls {
 
                         flipTile(xtile, ytile);
                         flipTilesNear(xtile, ytile);
+                        decMovesCtr();
 
                         if(undoStack.size() != 0) {
                             UndoCoordinates lastTouched = undoStack.peek();

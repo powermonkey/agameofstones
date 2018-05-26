@@ -24,7 +24,7 @@ public class Grid {
     final AGameOfStones game;
     private Table rootTable, table, winRootTable, winTable, hudTable, hudRootTable;
     private Stage stage;
-    private Label tiles [][], timeMsg;
+    private Label tiles [][], timeMsg, movesMsg;
     private Label.LabelStyle tileRedStyle, tileGreenStyle;
     private boolean gridField [][];
     private Controls controls;
@@ -33,12 +33,14 @@ public class Grid {
     private TextureAtlas.AtlasRegion exitIcon, newGameIcon, undoIcon;
     private TextButton.TextButtonStyle okayWinButtonStyle;
     private BitmapFont gameFont;
+    private int movesCtr;
 
     public Grid(AGameOfStones gam) {
         this.game = gam;
         constants = new Constants();
         gridField = new boolean[constants.SIZE_W][constants.SIZE_H];
         startTime = TimeUtils.millis();
+        movesCtr = 0;
         initTables();
         getAssets();
         initControls();
@@ -77,7 +79,10 @@ public class Grid {
     private void initControls() {
         Label.LabelStyle timeMsgStyle = new Label.LabelStyle(gameFont, null);
         timeMsg = new Label("", timeMsgStyle);
-        controls = new Controls(gridField, tiles, startTime, timeMsg);
+        Label.LabelStyle movesMsgStyle = new Label.LabelStyle(gameFont, null);
+        movesMsg = new Label("", movesMsgStyle);
+
+        controls = new Controls(gridField, tiles, startTime, timeMsg, movesMsg, movesCtr);
     }
 
     private void loadGrid() {
@@ -131,9 +136,11 @@ public class Grid {
 
         winTable.add(winMsg).pad(5).width(400);
         winTable.row();
-        winTable.add(timeMsg).pad(5).width(400);
+        winTable.add(timeMsg).pad(15).width(400);
         winTable.row();
-        winTable.add(okayWinButton).pad(10);
+        winTable.add(movesMsg).pad(15).width(400);
+        winTable.row();
+        winTable.add(okayWinButton).pad(10).width(100).height(40);
         winTable.row();
         winTable.setBackground(stoneSquare);
         winTable.setVisible(true);
