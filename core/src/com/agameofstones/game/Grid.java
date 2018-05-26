@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 /**
@@ -23,12 +24,12 @@ public class Grid {
     final AGameOfStones game;
     private Table rootTable, table, winRootTable, winTable, hudTable, hudRootTable;
     private Stage stage;
-    private Label tiles [][];
+    private Label tiles [][], timeMsg;
     private Label.LabelStyle tileRedStyle, tileGreenStyle;
     private boolean gridField [][];
     private Controls controls;
     private Constants constants;
-//    private TextButton okayWinButton;
+    public long startTime;
     private TextureAtlas.AtlasRegion exitIcon, newGameIcon, undoIcon;
     private TextButton.TextButtonStyle okayWinButtonStyle;
     private BitmapFont gameFont;
@@ -37,8 +38,10 @@ public class Grid {
         this.game = gam;
         constants = new Constants();
         gridField = new boolean[constants.SIZE_W][constants.SIZE_H];
+        startTime = TimeUtils.millis();
         initTables();
         getAssets();
+        initControls();
         loadGrid();
         loadWinGrid();
         loadHudGrid();
@@ -71,24 +74,24 @@ public class Grid {
         undoIcon = GameAssetLoader.undoIcon;
     }
 
+    private void initControls() {
+        Label.LabelStyle timeMsgStyle = new Label.LabelStyle(gameFont, null);
+        timeMsg = new Label("", timeMsgStyle);
+        controls = new Controls(gridField, tiles, startTime, timeMsg);
+    }
+
     private void loadGrid() {
-        controls = new Controls(gridField, tiles);
         for(int tileY = (constants.SIZE_H - 1); tileY >= 0; tileY--) {
             for(int tileX = 0; tileX < constants.SIZE_W; tileX++) {
                 final int xTile = tileX;
                 final int yTile = tileY;
 
-//                //testing grid
-//                if((xTile == 6 && yTile == 3) || (xTile == 5 && yTile == 2) || (xTile == 6 && yTile == 2) || (xTile == 7 && yTile == 2) || (xTile == 6 && yTile == 1)) {
-//                    tiles[xTile][yTile] = new Label(" ", tileRedStyle);
-//                    gridField[xTile][yTile] = false; //flipped tile
-//                } else {
-//                    tiles[xTile][yTile] = new Label(" ", tileGreenStyle);
-//                    gridField[xTile][yTile] = true; //unflipped tile
-//                }
+                //testing grid
+//                layOutTestingGrid(xTile, yTile);
+                // end testing grid
 
-                tiles[xTile][yTile] = new Label(" ", tileRedStyle);
-                gridField[xTile][yTile] = false; //unflipped tile
+                layOutGrid(xTile, yTile);
+
                 controls.addFlipListener(xTile, yTile, winRootTable);
                 table.add(tiles[xTile][yTile]).center().width(constants.TILE_W).height(constants.TILE_H);
             }
@@ -103,14 +106,32 @@ public class Grid {
         stage.addActor(rootTable);
     }
 
+    private void layOutTestingGrid(int xTile, int yTile) {
+        if((xTile == 6 && yTile == 3) || (xTile == 5 && yTile == 2) || (xTile == 6 && yTile == 2) || (xTile == 7 && yTile == 2) || (xTile == 6 && yTile == 1)) {
+            tiles[xTile][yTile] = new Label(" ", tileRedStyle);
+            gridField[xTile][yTile] = false; //flipped tile
+        } else {
+            tiles[xTile][yTile] = new Label(" ", tileGreenStyle);
+            gridField[xTile][yTile] = true; //unflipped tile
+        }
+    }
+
+    private void layOutGrid(int xTile, int yTile) {
+        tiles[xTile][yTile] = new Label(" ", tileRedStyle);
+        gridField[xTile][yTile] = false; //unflipped tile
+    }
+
     private void loadWinGrid() {
         TextButton okayWinButton = new TextButton("OKAY", okayWinButtonStyle);
         Label.LabelStyle winMessageStyle = new Label.LabelStyle(gameFont, null);
-        Label winMessage = new Label("Congratulations! You've solved the puzzle!", winMessageStyle);
-        winMessage.setWrap(true);
-        winMessage.setWidth(400);
+        Label winMsg = new Label("Congratulations! You've solved the puzzle!", winMessageStyle);
 
-        winTable.add(winMessage).pad(5).width(400);
+        winMsg.setWrap(true);
+        winMsg.setWidth(400);
+
+        winTable.add(winMsg).pad(5).width(400);
+        winTable.row();
+        winTable.add(timeMsg).pad(5).width(400);
         winTable.row();
         winTable.add(okayWinButton).pad(10);
         winTable.row();

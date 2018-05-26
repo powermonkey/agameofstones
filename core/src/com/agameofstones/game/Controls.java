@@ -11,8 +11,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.TimeUtils;
 
 import java.util.ArrayDeque;
+
+import javax.sound.midi.SysexMessage;
 
 /**
  * Created by Rod on 4/28/2018.
@@ -23,15 +26,19 @@ public class Controls {
     private NinePatchDrawable stoneGreen, stoneRed, stoneSquare;
     private TextureRegionDrawable starStoneRed, starStoneGreen;
     private final Label[][] gridTiles;
+    private Label timeMsg;
     private final boolean[][] gridField;
     private Constants constants;
     private int lastTouchedTileX, lastTouchedTileY;
     private ArrayDeque<UndoCoordinates> undoStack;
     private UndoCoordinates undoCoordinates;
+    private long startTime;
 
-    public Controls(boolean[][] gfield, Label[][] tiles){
+    public Controls(boolean[][] gfield, Label[][] tiles, long sTime, Label tMsg){
         gridTiles = tiles;
         gridField = gfield;
+        startTime = sTime;
+        timeMsg = tMsg;
         constants = new Constants();
         undoStack = new ArrayDeque<UndoCoordinates>();
         undoCoordinates = new UndoCoordinates();
@@ -82,6 +89,7 @@ public class Controls {
 
                     if (allTilesFlipped()) {
                         winTable.setVisible(true);
+                        setElapsedTime();
                     }
                 }
                 return true;
@@ -167,6 +175,15 @@ public class Controls {
         return allFlipped;
     }
 
+    private void setElapsedTime() {
+        long elapsedTime = TimeUtils.timeSinceMillis(startTime);
+        elapsedTime = elapsedTime / 1000;
+        if(elapsedTime > 999000) {
+            elapsedTime = 999;
+        }
+        timeMsg.setText("Time: "+Long.toString(elapsedTime)+"s");
+    }
+
     public void newGameBtnListener(Button newGameBtn, AGameOfStones gam) {
         final AGameOfStones game = gam;
         newGameBtn.addListener(new InputListener(){
@@ -190,23 +207,25 @@ public class Controls {
     public void undoBtnListener(Button undoBtn) {
         undoBtn.addListener(new InputListener(){
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                if(undoStack.size() > 0) {
-                    UndoCoordinates undoCoordinates = undoStack.pop();
-                    int xtile = undoCoordinates.getXTile();
-                    int ytile = undoCoordinates.getYTile();
+                if(!allTilesFlipped()) {
+                    if(undoStack.size() > 0) {
+                        UndoCoordinates undoCoordinates = undoStack.pop();
+                        int xtile = undoCoordinates.getXTile();
+                        int ytile = undoCoordinates.getYTile();
 
-                    flipTile(xtile, ytile);
-                    flipTilesNear(xtile, ytile);
+                        flipTile(xtile, ytile);
+                        flipTilesNear(xtile, ytile);
 
-                    if(undoStack.size() != 0) {
-                        UndoCoordinates lastTouched = undoStack.peek();
-                        if(!gridField[lastTouched.getXTile()][lastTouched.getYTile()]) {
-                            gridTiles[lastTouched.getXTile()][lastTouched.getYTile()].getStyle().background = starStoneRed;
-                        } else {
-                            gridTiles[lastTouched.getXTile()][lastTouched.getYTile()].getStyle().background = starStoneGreen;
+                        if(undoStack.size() != 0) {
+                            UndoCoordinates lastTouched = undoStack.peek();
+                            if(!gridField[lastTouched.getXTile()][lastTouched.getYTile()]) {
+                                gridTiles[lastTouched.getXTile()][lastTouched.getYTile()].getStyle().background = starStoneRed;
+                            } else {
+                                gridTiles[lastTouched.getXTile()][lastTouched.getYTile()].getStyle().background = starStoneGreen;
+                            }
+                            lastTouchedTileX = lastTouched.getXTile();
+                            lastTouchedTileY = lastTouched.getYTile();
                         }
-                        lastTouchedTileX = lastTouched.getXTile();
-                        lastTouchedTileY = lastTouched.getYTile();
                     }
                 }
                 return true;
