@@ -8,6 +8,10 @@ public class AGameOfStones extends Game {
 	public static final int HEIGHT = 800;
 	public static final String TITLE = "AGameOfStones";
 	SpriteBatch batch;
+	public enum Options {
+		RANDOM,
+		NORMAL
+	}
 	
 	@Override
 	public void create () {
@@ -15,7 +19,7 @@ public class AGameOfStones extends Game {
 		GameAssetLoader.loadAssets();
 		GameAssetLoader.setAssets();
         //TODO: set to main menu screen
-        this.setScreen(new GameScreen(this));
+        this.setScreen(new GameScreen(this, Options.NORMAL));
 	}
 
 	@Override

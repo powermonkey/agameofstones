@@ -42,7 +42,7 @@ public class GameAssetLoader {
         exitIcon = atlas.findRegion("stone_exit");
         mainMenuIcon = atlas.findRegion("stone_back");
         newGameIcon = atlas.findRegion("stone_new_game");
-        randomizeIcon = atlas.findRegion("stone_random");
+        randomizeIcon = atlas.findRegion("stone_surprise");
         undoIcon = atlas.findRegion("stone_undo");
 
         gameFont = gameAssetManager.manager.get("fonts/prstart/prstart.fnt");

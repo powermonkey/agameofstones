@@ -14,9 +14,9 @@ public class GameScreen implements Screen {
     Grid grid;
     OrthographicCamera cam;
 
-    public GameScreen(final AGameOfStones gam) {
+    public GameScreen(final AGameOfStones gam, AGameOfStones.Options optionSelect) {
         this.game = gam;
-        grid = new Grid(game);
+        grid = new Grid(game, optionSelect);
         cam = new OrthographicCamera();
         cam.setToOrtho(false, AGameOfStones.WIDTH, AGameOfStones.HEIGHT);
     }

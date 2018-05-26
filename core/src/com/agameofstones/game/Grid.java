@@ -15,6 +15,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
+import java.util.Random;
+
 /**
  * Created by Rod on 4/17/2018.
  */
@@ -22,6 +24,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 public class Grid {
     private NinePatchDrawable stoneSquare, stoneGray;
     final AGameOfStones game;
+    private AGameOfStones.Options option;
     private Table rootTable, table, winRootTable, winTable, hudTable, hudRootTable;
     private Stage stage;
     private Label tiles [][], timeMsg, movesMsg;
@@ -30,13 +33,14 @@ public class Grid {
     private Controls controls;
     private Constants constants;
     public long startTime;
-    private TextureAtlas.AtlasRegion exitIcon, newGameIcon, undoIcon;
+    private TextureAtlas.AtlasRegion exitIcon, newGameIcon, undoIcon, randomizeIcon;
     private TextButton.TextButtonStyle okayWinButtonStyle;
     private BitmapFont gameFont;
     private int movesCtr;
 
-    public Grid(AGameOfStones gam) {
+    public Grid(AGameOfStones gam, AGameOfStones.Options optionSelected) {
         this.game = gam;
+        option = optionSelected;
         constants = new Constants();
         gridField = new boolean[constants.SIZE_W][constants.SIZE_H];
         startTime = TimeUtils.millis();
@@ -74,6 +78,7 @@ public class Grid {
         exitIcon = GameAssetLoader.exitIcon;
         newGameIcon = GameAssetLoader.newGameIcon;
         undoIcon = GameAssetLoader.undoIcon;
+        randomizeIcon = GameAssetLoader.randomizeIcon;
     }
 
     private void initControls() {
@@ -122,8 +127,26 @@ public class Grid {
     }
 
     private void layOutGrid(int xTile, int yTile) {
-        tiles[xTile][yTile] = new Label(" ", tileRedStyle);
-        gridField[xTile][yTile] = false; //unflipped tile
+        switch (option) {
+            case RANDOM:
+                Random ran = new Random();
+                int x = ran.nextInt(2);
+
+                if(x == 1) {
+                    tiles[xTile][yTile] = new Label(" ", tileRedStyle);
+                    gridField[xTile][yTile] = false; //unflipped tile
+                } else {
+                    tiles[xTile][yTile] = new Label(" ", tileGreenStyle);
+                    gridField[xTile][yTile] = true; //flipped tile
+                }
+                break;
+
+            //NORMAL
+            default:
+                tiles[xTile][yTile] = new Label(" ", tileRedStyle);
+                gridField[xTile][yTile] = false; //unflipped tile
+                break;
+        }
     }
 
     private void loadWinGrid() {
@@ -136,11 +159,11 @@ public class Grid {
 
         winTable.add(winMsg).pad(5).width(400);
         winTable.row();
-        winTable.add(timeMsg).pad(15).width(400);
+        winTable.add(timeMsg).pad(20, 10, 20, 10).width(400);
         winTable.row();
-        winTable.add(movesMsg).pad(15).width(400);
+        winTable.add(movesMsg).pad(20, 10, 20, 10).width(400);
         winTable.row();
-        winTable.add(okayWinButton).pad(10).width(100).height(40);
+        winTable.add(okayWinButton).pad(20).width(100).height(40);
         winTable.row();
         winTable.setBackground(stoneSquare);
         winTable.setVisible(true);
@@ -173,8 +196,15 @@ public class Grid {
         undoBtnStyle.down = new TextureRegionDrawable(new TextureRegion(undoIcon));
         undoBtn.setStyle(undoBtnStyle);
 
+        Button randomBtn = new Button();
+        Button.ButtonStyle randomBtnStyle = new Button.ButtonStyle();
+        randomBtnStyle.up = new TextureRegionDrawable(new TextureRegion(randomizeIcon));
+        randomBtnStyle.down = new TextureRegionDrawable(new TextureRegion(randomizeIcon));
+        randomBtn.setStyle(randomBtnStyle);
+
         hudTable.add(exitBtn).pad(5).width(50).height(50);
         hudTable.add(newGameBtn).pad(5).width(50).height(50);
+        hudTable.add(randomBtn).pad(5).width(50).height(50);
         hudTable.add(undoBtn).pad(5).width(50).height(50);
         hudTable.background(stoneGray);
 
@@ -184,6 +214,7 @@ public class Grid {
         controls.undoBtnListener(undoBtn);
         controls.exitBtnListener(exitBtn);
         controls.newGameBtnListener(newGameBtn, game);
+        controls.randomBtnBtnListener(randomBtn, game);
 
         stage.addActor(hudRootTable);
     }

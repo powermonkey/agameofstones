@@ -186,11 +186,11 @@ public class Controls {
         if(elapsedTime > 999000) {
             elapsedTime = 999;
         }
-        timeMsg.setText("Time: "+Long.toString(elapsedTime)+" s");
+        timeMsg.setText("Time: "+Long.toString(elapsedTime)+" seconds");
     }
 
     private void setNumberOfMoves() {
-        movesMsg.setText("Moves: "+Integer.toString(movesCtr));
+        movesMsg.setText("Actions: "+Integer.toString(movesCtr)+" moves");
     }
 
     private void incMovesCtr() {
@@ -205,7 +205,17 @@ public class Controls {
         final AGameOfStones game = gam;
         newGameBtn.addListener(new InputListener(){
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                game.setScreen(new GameScreen(game));
+                game.setScreen(new GameScreen(game, AGameOfStones.Options.NORMAL));
+                return true;
+            }
+        });
+    }
+
+    public void randomBtnBtnListener(Button newGameBtn, AGameOfStones gam) {
+        final AGameOfStones game = gam;
+        newGameBtn.addListener(new InputListener(){
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                game.setScreen(new GameScreen(game, AGameOfStones.Options.RANDOM));
                 return true;
             }
         });
