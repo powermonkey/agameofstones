@@ -1,5 +1,5 @@
 apply plugin: "java"
-apply plugin: "jetty"
+apply plugin: "org.gretty"
 
 gwt {
     gwtVersion='2.8.0' // Should match the gwt version used for building the gwt backend
@@ -17,7 +17,7 @@ gwt {
     }
 }
 
-task draftRun(type: JettyRunWar) {
+task draftRun(type: GrettyRunWar) {
     dependsOn draftWar
     dependsOn.remove('war')
     webApp=draftWar.archivePath

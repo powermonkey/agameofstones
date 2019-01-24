@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class AGameOfStones extends Game {
 	public static final int WIDTH = 480;
 	public static final int HEIGHT = 800;
-	public static final String TITLE = "AGameOfStones";
+	public static final String TITLE = "A Game Of Stones";
 	SpriteBatch batch;
 	public enum Options {
 		RANDOM,

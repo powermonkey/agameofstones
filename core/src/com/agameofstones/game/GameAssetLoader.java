@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Array;
 
 /**
  * Created by Rod on 4/16/2018.
@@ -14,12 +15,13 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 public class GameAssetLoader {
     public static TextureAtlas atlas;
-    public static TextureAtlas.AtlasRegion starStoneGreen, starStoneRed, stoneGray, stoneGreen, stonePink, stoneRed, stoneGraySquare, exitIcon, mainMenuIcon, newGameIcon, randomizeIcon, undoIcon;
     public static BitmapFont gameFont;
     public static Label.LabelStyle tileRedStyle, tileGreenStyle;
     public static NinePatchDrawable patchDrawableStoneGray, patchDrawableStoneSquare, patchDrawableStoneGreen, patchDrawableStoneRed, patchDrawableStonePink;
     public static TextButton.TextButtonStyle okayWinButtonStyle;
     public static TextureRegionDrawable mainStoneGreen, mainStoneRed, starRed, starGreen;
+    public static TextureAtlas.AtlasRegion starStoneGreen, starStoneRed, stoneGray, stoneGreen, stonePink, stoneRed, stoneGraySquare, exitIcon, mainMenuIcon, newGameIcon, randomizeIcon, undoIcon;
+    public static TextureAtlas.AtlasRegion bg;
     static GameAssetManager gameAssetManager;
 
 
@@ -44,6 +46,7 @@ public class GameAssetLoader {
         newGameIcon = atlas.findRegion("stone_new_game");
         randomizeIcon = atlas.findRegion("stone_surprise");
         undoIcon = atlas.findRegion("stone_undo");
+        bg = atlas.findRegion("bg");
 
         gameFont = gameAssetManager.manager.get("fonts/prstart/prstart.fnt");
 
