@@ -28,7 +28,7 @@ public class Grid {
     private Table rootTable, table, winRootTable, winTable, hudTable, hudRootTable;
     private Stage stage;
     private Label tiles [][], timeMsg, movesMsg;
-    private Label.LabelStyle tileRedStyle, tileGreenStyle;
+    private Label.LabelStyle tileRedStyle, tileGreenStyle, tileYellowStyle;
     private boolean gridField [][];
     private Controls controls;
     private Constants constants;
@@ -73,6 +73,7 @@ public class Grid {
         stoneGray = GameAssetLoader.patchDrawableStoneGray;
         tileRedStyle = GameAssetLoader.tileRedStyle;
         tileGreenStyle = GameAssetLoader.tileGreenStyle;
+        tileYellowStyle = GameAssetLoader.tileYellowStyle;
         okayWinButtonStyle = GameAssetLoader.okayWinButtonStyle;
         gameFont = GameAssetLoader.gameFont;
         exitIcon = GameAssetLoader.exitIcon;
@@ -121,7 +122,7 @@ public class Grid {
             tiles[xTile][yTile] = new Label(" ", tileRedStyle);
             gridField[xTile][yTile] = false; //flipped tile
         } else {
-            tiles[xTile][yTile] = new Label(" ", tileGreenStyle);
+            tiles[xTile][yTile] = new Label(" ", tileYellowStyle);
             gridField[xTile][yTile] = true; //unflipped tile
         }
     }
@@ -136,7 +137,7 @@ public class Grid {
                     tiles[xTile][yTile] = new Label(" ", tileRedStyle);
                     gridField[xTile][yTile] = false; //unflipped tile
                 } else {
-                    tiles[xTile][yTile] = new Label(" ", tileGreenStyle);
+                    tiles[xTile][yTile] = new Label(" ", tileYellowStyle);
                     gridField[xTile][yTile] = true; //flipped tile
                 }
                 break;

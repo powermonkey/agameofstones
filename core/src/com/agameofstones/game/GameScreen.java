@@ -23,7 +23,7 @@ public class GameScreen implements Screen {
         bg = GameAssetLoader.bg;
         grid = new Grid(game, optionSelect);
         cam = new OrthographicCamera();
-        cam.setToOrtho(false, 137, 89 );
+        cam.setToOrtho(false, AGameOfStones.WIDTH, AGameOfStones.HEIGHT );
     }
 
     @Override

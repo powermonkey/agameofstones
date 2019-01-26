@@ -23,8 +23,8 @@ import javax.sound.midi.SysexMessage;
 
 public class Controls {
     private Label.LabelStyle tileRedStyle;
-    private NinePatchDrawable stoneGreen, stoneRed, stoneSquare;
-    private TextureRegionDrawable starStoneRed, starStoneGreen;
+    private NinePatchDrawable stoneGreen, stoneRed, stoneSquare, stoneYellow;
+    private TextureRegionDrawable starStoneRed, starStoneGreen, starStoneYellow;
     private final Label[][] gridTiles;
     private Label timeMsg, movesMsg;
     private final boolean[][] gridField;
@@ -52,8 +52,10 @@ public class Controls {
         tileRedStyle = GameAssetLoader.tileRedStyle;
         stoneGreen = GameAssetLoader.patchDrawableStoneGreen;
         stoneRed = GameAssetLoader.patchDrawableStoneRed;
+        stoneYellow = GameAssetLoader.patchDrawableStoneYellow;
         starStoneRed = GameAssetLoader.starRed;
         starStoneGreen = GameAssetLoader.starGreen;
+        starStoneYellow = GameAssetLoader.starYellow;
         stoneSquare = GameAssetLoader.patchDrawableStoneSquare;
         lastTouchedTileX = 8;
         lastTouchedTileY = 8;
@@ -132,7 +134,7 @@ public class Controls {
         if(!gridField[x][y]){
             gridTiles[x][y].getStyle().background = stoneRed;
         } else {
-            gridTiles[x][y].getStyle().background = stoneGreen;
+            gridTiles[x][y].getStyle().background = stoneYellow;
         }
     }
 
@@ -147,7 +149,7 @@ public class Controls {
                 if(!gridField[lastTouchedTileX][lastTouchedTileY]){
                     gridTiles[lastTouchedTileX][lastTouchedTileY].getStyle().background = stoneRed;
                 } else {
-                    gridTiles[lastTouchedTileX][lastTouchedTileY].getStyle().background = stoneGreen;
+                    gridTiles[lastTouchedTileX][lastTouchedTileY].getStyle().background = stoneYellow;
                 }
         }
 
@@ -158,7 +160,7 @@ public class Controls {
         if(!gridField[x][y]){
             gridTiles[x][y].getStyle().background = starStoneRed;
         } else {
-            gridTiles[x][y].getStyle().background = starStoneGreen;
+            gridTiles[x][y].getStyle().background = starStoneYellow;
         }
     }
 
@@ -249,7 +251,7 @@ public class Controls {
                             if(!gridField[lastTouched.getXTile()][lastTouched.getYTile()]) {
                                 gridTiles[lastTouched.getXTile()][lastTouched.getYTile()].getStyle().background = starStoneRed;
                             } else {
-                                gridTiles[lastTouched.getXTile()][lastTouched.getYTile()].getStyle().background = starStoneGreen;
+                                gridTiles[lastTouched.getXTile()][lastTouched.getYTile()].getStyle().background = starStoneYellow;
                             }
                             lastTouchedTileX = lastTouched.getXTile();
                             lastTouchedTileY = lastTouched.getYTile();
