@@ -10,6 +10,6 @@ public class DesktopLauncher {
 		config.width = AGameOfStones.WIDTH;
 		config.height = AGameOfStones.HEIGHT;
 		config.title = AGameOfStones.TITLE;
-		new LwjglApplication(new AGameOfStones(), config);
+		new LwjglApplication(new AGameOfStones(null), config);
 	}
 }

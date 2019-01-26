@@ -12,6 +12,16 @@ public class AGameOfStones extends Game {
 		RANDOM,
 		NORMAL
 	}
+
+	public AdsController adsController;
+
+	public AGameOfStones(AdsController adsController){
+		if (adsController != null) {
+			this.adsController = adsController;
+		} else {
+			this.adsController = new DummyController();
+		}
+	}
 	
 	@Override
 	public void create () {
@@ -20,6 +30,9 @@ public class AGameOfStones extends Game {
 		GameAssetLoader.setAssets();
         //TODO: set to main menu screen
         this.setScreen(new GameScreen(this, Options.NORMAL));
+		if(adsController.isWifiConnected()) {
+			adsController.showBannerAd();
+		}
 	}
 
 	@Override
