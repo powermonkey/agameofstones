@@ -16,9 +16,12 @@ import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.agameofstones.game.AGameOfStones;
+import com.mopub.common.MoPub;
+import com.mopub.common.SdkConfiguration;
 
 public class AndroidLauncher extends AndroidApplication implements AdsController {
     private static final String BANNER_AD_UNIT_ID = "ca-app-pub-5225464865745943/1866644465";
+    private static final String BANNER_MOPUB_UNIT_ID = "cdb046a26b494ed0a97b3c3c6d6c9aa2";
 
     AdView bannerAd;
     View gameView;
@@ -44,6 +47,11 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
 
         MobileAds.initialize(this, BANNER_AD_UNIT_ID);
         setContentView(layout);
+
+        SdkConfiguration sdkConfiguration =
+                new SdkConfiguration.Builder(BANNER_MOPUB_UNIT_ID).build();
+
+        MoPub.initializeSdk(this, sdkConfiguration, null);
 	}
 
     public void setupAds() {
